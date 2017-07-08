@@ -3,8 +3,10 @@ Simple Tasks App
 
 Written with [Vue.js](https://vuejs.org/) as front-end and back-end in [Laravel](https://laravel.com/).
 
-Setup
------
+Try it [here](http://tasksapp.nerfthis.xyz)! 
+
+Local Setup
+-----------
 After cloning the repo simply run the Composer installer then NPM
 ```
 $ composer install
