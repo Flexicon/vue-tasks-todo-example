@@ -18,7 +18,7 @@
 
         <div class="well well-sm">
             <div class="h3">Tasks List</div>
-            <ul>
+            <ul class="list-group">
                 <li class="list-group-item" v-for="task in tasks" :key="task.id">
                     {{ task.body }}
                     <button @click="showTask(task.id)" class="btn btn-primary btn-xs">Edit</button>
@@ -45,38 +45,46 @@
         },
         methods: {
             fetchTasksList: function () {
-                this.$http.get('/api/tasks').then(function (res) {
-                    this.tasks = res.body;
+                const self = this;
+                self.$http.get('/api/tasks').then(function (res) {
+                    self.tasks = res.body;
                 });
             },
 
             createTask: function () {
-                this.$http.post('/api/task/store', this.task)
-                this.task.body = ''
-                this.edit = false
-                this.fetchTasksList()
+                const self = this;
+                self.$http.post('/api/task/store', self.task).then(function (res) {
+                    self.task.body = '';
+                    self.edit = false;
+                    self.fetchTasksList();
+                });
             },
 
             updateTask: function (id) {
-                this.$http.patch('/api/task/' + id, this.task)
-                this.task.body = ''
-                this.task.id = ''
-                this.edit = false
-                this.fetchTasksList()
+                const self = this;
+                self.$http.patch('/api/task/' + id, self.task).then(function (res) {
+                    self.task.body = '';
+                    self.task.id = '';
+                    self.edit = false;
+                    self.fetchTasksList()
+                });
             },
 
             showTask: function (id) {
-                this.$http.get('/api/task/' + id).then(function (response) {
-                    this.task.id = response.data.id
-                    this.task.body = response.data.body
-                })
-                this.$refs.taskinput.focus()
-                this.edit = true
+                const self = this;
+                self.$http.get('/api/task/' + id).then(function (res) {
+                    self.task.id = res.data.id
+                    self.task.body = res.data.body
+                    self.$refs.taskinput.focus();
+                    self.edit = true;
+                });
             },
 
             deleteTask: function (id) {
-                this.$http.delete('/api/task/' + id)
-                this.fetchTasksList()
+                const self = this;
+                self.$http.delete('/api/task/' + id).then(function (res) {
+                    self.fetchTasksList();
+                });
             },
         }
     }
